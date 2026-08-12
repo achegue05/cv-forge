@@ -1,0 +1,180 @@
+/* ============================================================
+   CV Forge — hoja de estilos del documento.
+   Todo lo configurable entra por variables CSS que fija app.js
+   sobre #cv-root. Este archivo también se incrusta en el HTML
+   exportado, así que no debe depender de app.css.
+   ============================================================ */
+
+.cv{
+  /* Valores de reserva; app.js los sobrescribe en línea */
+  --page-w: 215.9mm;
+  --page-h: 279.4mm;
+  --mt: 20px; --mr: 45px; --mb: 35px; --ml: 45px;
+  --font: "Times New Roman", Times, serif;
+  --fs: 11.5px;
+  --lh: 1.4;
+  --ls: 0em;
+  --text: #000000;
+  --page-bg: #ffffff;
+  --rule: #000000;
+
+  --name-size: 22px;
+  --name-weight: 700;
+  --name-case: uppercase;
+  --name-ls: .05em;
+  --name-color: #000000;
+  --header-align: center;
+  --contact-size: 11px;
+  --header-gap: 10px;
+
+  --title-size: 11.5px;
+  --title-weight: 700;
+  --title-case: uppercase;
+  --title-ls: .04em;
+  --title-color: #000000;
+  --title-align: left;
+  --rule-w: 1px;
+  --rule-style: solid;
+  --rule-gap: 2px;
+  --title-mb: 8px;
+
+  --section-gap: 14px;
+  --item-gap: 10px;
+  --bullet-gap: 2px;
+  --bullet-indent: 20px;
+  --bullet-char: disc;
+  --label-w: 150px;
+  --date-style: normal;
+  --date-weight: inherit;
+  --sub-style: italic;
+  --sub-weight: 400;
+  --text-align: left;
+
+  width: var(--page-w);
+  min-height: var(--page-h);
+  padding: var(--mt) var(--mr) var(--mb) var(--ml);
+  background: var(--page-bg);
+  color: var(--text);
+  font-family: var(--font);
+  font-size: var(--fs);
+  line-height: var(--lh);
+  letter-spacing: var(--ls);
+  text-align: var(--text-align);
+  position: relative;
+  box-shadow: 0 14px 44px rgba(0,0,0,.35);
+}
+
+.cv *{ box-sizing:border-box; margin:0; padding:0; }
+
+/* ── Guías de corte de página (solo en pantalla) ─────────── */
+.cv-guides{
+  position:absolute; inset:0; pointer-events:none; z-index:2;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent calc(var(--page-h) - 1px),
+    rgba(207, 74, 60, .45) calc(var(--page-h) - 1px),
+    rgba(207, 74, 60, .45) var(--page-h)
+  );
+}
+
+/* ── Encabezado ───────────────────────────────────────────── */
+.cv-header{ text-align:var(--header-align); margin-bottom:var(--header-gap); }
+.cv-name{
+  font-size:var(--name-size);
+  font-weight:var(--name-weight);
+  text-transform:var(--name-case);
+  letter-spacing:var(--name-ls);
+  color:var(--name-color);
+  line-height:1.15;
+  margin-bottom:4px;
+}
+.cv-contact{ font-size:var(--contact-size); }
+.cv-contact a{ color:inherit; text-decoration:none; }
+.cv-tagline{ font-size:var(--contact-size); font-style:italic; margin-top:1px; }
+.cv-header-rule{
+  border:0; border-bottom:var(--rule-w) var(--rule-style) var(--rule);
+  margin-top:6px;
+}
+
+/* ── Secciones ────────────────────────────────────────────── */
+.cv-section{ margin-bottom:var(--section-gap); }
+.cv-section:last-child{ margin-bottom:0; }
+.cv-section-title{
+  font-size:var(--title-size);
+  font-weight:var(--title-weight);
+  text-transform:var(--title-case);
+  letter-spacing:var(--title-ls);
+  color:var(--title-color);
+  text-align:var(--title-align);
+  border-bottom:var(--rule-w) var(--rule-style) var(--rule);
+  padding-bottom:var(--rule-gap);
+  margin-bottom:var(--title-mb);
+  break-after:avoid; page-break-after:avoid;
+}
+.cv-section.no-rule .cv-section-title{ border-bottom:0; padding-bottom:0; }
+
+/* ── Entradas ─────────────────────────────────────────────── */
+.cv-item{ margin-bottom:var(--item-gap); }
+.cv-item:last-child{ margin-bottom:0; }
+.cv.avoid-break .cv-item{ break-inside:avoid; page-break-inside:avoid; }
+
+.cv-row{
+  display:flex; justify-content:space-between; align-items:baseline;
+  gap:14px; text-align:left;
+}
+.cv-row-main{ font-weight:700; }
+.cv-row-sub{
+  font-style:var(--sub-style);
+  font-weight:var(--sub-weight);
+  margin-bottom:1px;
+}
+.cv-side{
+  white-space:nowrap; flex:0 0 auto;
+  font-style:var(--date-style);
+  font-weight:var(--date-weight);
+}
+.cv-row-sub .cv-side{ font-style:inherit; font-weight:inherit; }
+
+.cv-text{ margin-top:2px; text-align:var(--text-align); }
+
+.cv-bullets{
+  list-style-type: var(--bullet-char);
+  padding-left: var(--bullet-indent);
+  margin-top:2px;
+}
+.cv-bullets.plain{ list-style:none; padding-left:0; }
+.cv-bullets li{ padding-left:2px; margin-bottom:var(--bullet-gap); text-align:var(--text-align); }
+.cv-bullets li:last-child{ margin-bottom:0; }
+
+/* ── Filas etiqueta / contenido ───────────────────────────── */
+.cv-info{ display:flex; gap:6px; margin-bottom:var(--bullet-gap); }
+.cv-info:last-child{ margin-bottom:0; }
+.cv-info-label{ font-weight:700; width:var(--label-w); flex:0 0 auto; }
+.cv-info-content{ flex:1 1 auto; }
+.cv-info.stacked{ display:block; }
+.cv-info.stacked .cv-info-label{ width:auto; }
+
+/* ── Listas simples ───────────────────────────────────────── */
+.cv-list{ list-style:none; padding-left:0; }
+.cv-list.marked{ list-style-type:var(--bullet-char); padding-left:var(--bullet-indent); }
+.cv-list li{ margin-bottom:var(--bullet-gap); }
+.cv-list li:last-child{ margin-bottom:0; }
+
+/* ── Dos columnas ─────────────────────────────────────────── */
+.cols-2{ column-count:2; column-gap:22px; }
+.cols-2 > *{ break-inside:avoid; }
+
+.cv-empty{ color:#999; font-style:italic; }
+
+/* ── Impresión ────────────────────────────────────────────── */
+@media print{
+  .cv{
+    width:auto !important;
+    min-height:0 !important;
+    padding:0 !important;      /* los márgenes los pone @page */
+    box-shadow:none !important;
+    margin:0 !important;
+  }
+  .cv-guides{ display:none !important; }
+}
