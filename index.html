@@ -1,114 +1,131 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" data-theme="dark">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>CV Forge — Diseñador de CV formato Harvard</title>
-<meta name="description" content="Crea, personaliza y descarga tu CV en formato Harvard. Gratis, sin registro y sin enviar tus datos a ningún servidor." />
+<title>CV Forge</title>
+<meta name="description" content="Crea, personaliza y descarga tu CV en formato Harvard y otros. Editor de texto enriquecido, plantillas, análisis ATS y exportación a PDF, Word, HTML y Markdown. Gratis, sin registro y sin enviar tus datos a ningún servidor." />
+<meta name="color-scheme" content="dark light" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230B0B0C'/%3E%3Crect x='7' y='6' width='18' height='20' fill='%23ECECEE'/%3E%3Crect x='10' y='10' width='12' height='2' fill='%230B0B0C'/%3E%3Crect x='10' y='15' width='12' height='1.5' fill='%236C6D76'/%3E%3Crect x='10' y='19' width='8' height='1.5' fill='%236C6D76'/%3E%3C/svg%3E" />
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;0,700;1,400&family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=Lato:ital,wght@0,400;0,700;1,400&family=Merriweather:ital,wght@0,400;0,700;1,400&family=Inter:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=JetBrains+Mono:wght@400;700&family=EB+Garamond:ital,wght@0,400;0,600;1,400&family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Crimson+Pro:ital,wght@0,400;0,600;1,400&family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Lora:ital,wght@0,400;0,700;1,400&family=Merriweather:ital,wght@0,400;0,700;1,400&family=PT+Serif:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;600;700&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&family=Lato:ital,wght@0,300;0,400;0,700;1,400&family=Roboto:ital,wght@0,400;0,700;1,400&family=Open+Sans:ital,wght@0,400;0,700;1,400&family=Montserrat:wght@400;600;700&family=Poppins:wght@400;600;700&family=Work+Sans:wght@400;600;700&family=Karla:wght@400;700&family=Raleway:wght@400;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,600;1,400&family=IBM+Plex+Mono:wght@400;600&family=Space+Grotesk:wght@400;600;700&display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="assets/app.css" />
-<link rel="stylesheet" href="assets/cv.css" />
 </head>
 <body>
 
+<div class="bg" aria-hidden="true"><i></i><i></i><i></i></div>
+
 <div id="app">
 
-  <header class="topbar">
+  <header class="topbar glass">
     <div class="brand">
       <span class="brand-mark">CV</span>
-      <span class="brand-name">Forge</span>
-      <span class="brand-sub">formato Harvard</span>
+      <span class="brand-text">
+        <span class="brand-name">Forge</span>
+        <span class="brand-sub" id="brand-sub">editor de currículum</span>
+      </span>
     </div>
 
-    <div class="topbar-actions">
-      <button class="btn" data-action="load-example" title="Carga un CV de ejemplo con todas las secciones">Ver ejemplo</button>
-      <button class="btn" data-action="new-cv" title="Empieza con un CV vacío">Empezar en blanco</button>
-      <button class="btn" data-action="import" title="Abre un archivo .json guardado antes">Abrir archivo</button>
-      <button class="btn" data-action="export" title="Guarda tu CV como archivo .json para editarlo después">Guardar archivo</button>
-      <button class="btn" data-action="export-html" title="Descarga el CV como página HTML independiente">Descargar HTML</button>
-      <button class="btn btn-primary" data-action="print" title="Abre el diálogo de impresión: elige «Guardar como PDF»">Descargar PDF</button>
+    <div class="dropdown" id="docs-drop">
+      <button class="doc-chip" data-drop="docs-drop">
+        <span id="doc-name">CV</span>
+      </button>
+      <div class="drop-panel" id="docs-menu"></div>
     </div>
+    <span class="save-status" id="save-status"></span>
+
+    <div class="topbar-actions">
+      <button class="btn" data-action="load-example" data-i18n="example">Cargar ejemplo</button>
+      <button class="btn" data-action="new-cv" data-i18n="blank">Empezar en blanco</button>
+      <button class="btn" data-action="import" data-i18n="openFile">Abrir archivo</button>
+
+      <div class="dropdown drop-right" id="export-drop">
+        <button class="btn has-drop" data-drop="export-drop" data-i18n="exportMenu">Exportar</button>
+        <div class="drop-panel">
+          <button class="menu-item" data-action="export-docx" data-i18n="exportDocx">Documento Word</button>
+          <button class="menu-item" data-action="export-html" data-i18n="exportHtml">Página HTML</button>
+          <button class="menu-item" data-action="export-txt" data-i18n="exportTxt">Texto plano</button>
+          <button class="menu-item" data-action="export-md" data-i18n="exportMd">Markdown</button>
+          <button class="menu-item" data-action="export-json" data-i18n="exportJson">Archivo del proyecto</button>
+        </div>
+      </div>
+
+      <button class="btn btn-primary" data-action="print" data-i18n="downloadPdf">Descargar PDF</button>
+
+      <span class="seg" role="group">
+        <button data-action="lang" data-lang-btn="es">ES</button>
+        <button data-action="lang" data-lang-btn="en">EN</button>
+      </span>
+      <button class="icon-round" data-action="theme" data-i18n-title="theme" title="Tema"><span class="swap">☾</span></button>
+    </div>
+
     <input type="file" id="file-input" accept="application/json,.json" hidden />
+    <input type="file" id="photo-input" accept="image/*" hidden />
   </header>
+
+  <div class="ribbon glass" id="ribbon"></div>
 
   <main class="workspace">
 
-    <aside class="panel" id="panel">
+    <aside class="panel glass" id="panel">
       <nav class="tabs" role="tablist">
-        <button class="tab is-active" data-tab="content" role="tab">Contenido</button>
-        <button class="tab" data-tab="design" role="tab">Diseño</button>
-        <button class="tab" data-tab="help" role="tab">Ayuda</button>
+        <button class="tab is-active" data-tab="content" role="tab">contenido</button>
+        <button class="tab" data-tab="design" role="tab">diseño</button>
+        <button class="tab" data-tab="templates" role="tab">plantillas</button>
+        <button class="tab" data-tab="review" role="tab">análisis</button>
+        <button class="tab" data-tab="help" role="tab">ayuda</button>
       </nav>
 
       <div class="panel-scroll">
         <div class="tabpane is-active" id="pane-content"></div>
         <div class="tabpane" id="pane-design"></div>
-        <div class="tabpane" id="pane-help">
-          <div class="help-block">
-            <p class="eyebrow">Cómo funciona</p>
-            <h3>Tus datos no salen de tu navegador</h3>
-            <p>Todo se guarda en el almacenamiento local de tu equipo. No hay servidor, no hay cuenta, no hay base de datos. Si borras los datos del navegador, se borra el CV: usa <strong>Guardar archivo</strong> para tener una copia.</p>
-          </div>
-          <div class="help-block">
-            <p class="eyebrow">Exportar a PDF</p>
-            <h3>Usa Descargar PDF</h3>
-            <p>Se abre el diálogo de impresión del navegador. Elige <strong>Guardar como PDF</strong>, y en las opciones desactiva «Encabezados y pies de página». Los márgenes ya vienen del diseño, deja los del navegador en «Predeterminado» o «Ninguno». Chrome y Edge dan el mejor resultado.</p>
-          </div>
-          <div class="help-block">
-            <p class="eyebrow">Formato con asteriscos</p>
-            <h3>Negritas y cursivas</h3>
-            <p>En cualquier campo de texto puedes escribir <code>**negrita**</code> y <code>*cursiva*</code>. Útil para el nombre del certificado seguido de la institución.</p>
-          </div>
-          <div class="help-block">
-            <p class="eyebrow">Una sola página</p>
-            <h3>Ajustar a 1 página</h3>
-            <p>El botón está en la pestaña Diseño. Reduce tipografía y espaciados poco a poco hasta que el contenido entre en una hoja. Si aun así no cabe, quita contenido: para un CV de estudiante, una página es lo esperado.</p>
-          </div>
-          <div class="help-block">
-            <p class="eyebrow">Compatibilidad con ATS</p>
-            <h3>Qué respetar</h3>
-            <p>Los filtros automáticos leen mejor una sola columna, tipografías comunes, títulos de sección estándar y texto real (no imágenes). Este diseño ya cumple todo eso. Evita márgenes menores a 12 mm y tamaños menores a 10 px.</p>
-          </div>
-          <div class="help-block">
-            <p class="eyebrow">Atajos</p>
-            <h3>Teclado</h3>
-            <p><code>Ctrl/Cmd + P</code> imprimir · <code>Ctrl/Cmd + S</code> guardar archivo · <code>Ctrl/Cmd + Alt + [ ]</code> zoom de la vista previa.</p>
-          </div>
-        </div>
+        <div class="tabpane" id="pane-templates"></div>
+        <div class="tabpane" id="pane-review"></div>
+        <div class="tabpane" id="pane-help"></div>
       </div>
     </aside>
 
-    <section class="stage">
+    <section class="stage glass">
       <div class="stage-bar">
         <div class="zoom">
-          <button class="icon-btn" data-action="zoom-out" aria-label="Alejar">−</button>
+          <button class="icon-btn" data-action="zoom-out" aria-label="−">−</button>
           <span class="zoom-value" id="zoom-value">100%</span>
-          <button class="icon-btn" data-action="zoom-in" aria-label="Acercar">+</button>
-          <button class="icon-btn" data-action="zoom-fit" title="Ajustar al ancho">ajustar</button>
+          <button class="icon-btn" data-action="zoom-in" aria-label="+">+</button>
+          <button class="icon-btn" data-action="zoom-fit">fit</button>
         </div>
         <div class="stage-meta">
-          <span id="page-count">1 página</span>
+          <span id="page-count">1</span>
+          <span class="meter" id="fill-meter"><i style="width:0%"></i></span>
           <button class="icon-btn only-mobile" data-action="toggle-panel">editor</button>
         </div>
       </div>
 
       <div class="stage-scroll" id="stage-scroll">
         <div class="paper-scaler" id="paper-scaler">
-          <article id="cv-root" class="cv"></article>
+          <article id="cv-root" class="cv cv-live"></article>
         </div>
       </div>
     </section>
 
   </main>
 
-  <div class="toast" id="toast" hidden></div>
+  <div class="toast" id="toast"></div>
 </div>
 
 <style id="dynamic-print-style"></style>
-<script src="assets/app.js"></script>
+
+<script src="assets/js/core.js"></script>
+<script src="assets/js/i18n.js"></script>
+<script src="assets/js/docstyle.js"></script>
+<script src="assets/js/data.js"></script>
+<script src="assets/js/richtext.js"></script>
+<script src="assets/js/render.js"></script>
+<script src="assets/js/review.js"></script>
+<script src="assets/js/panel.js"></script>
+<script src="assets/js/export.js"></script>
+<script src="assets/js/app.js"></script>
 </body>
 </html>
